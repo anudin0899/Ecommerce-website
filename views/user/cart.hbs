@@ -1,0 +1,63 @@
+<section>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="text-center m-auto">
+                <h2>Cart</h2>
+            </div>
+            <table class="table mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Quantity</th>
+                        <th></th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{#each products}}
+                    <tr>
+                        <td class="pl-5"><img style="width: 50px;height:50px; "
+                                src="/product-image/{{this.product._id}}.jpg" alt=""></td>
+                        <td>{{this.product.Name}}</td>
+
+                        <td>
+
+
+                            <button class="cart-item-count mr-3 pr-2 pl-2" onclick="changeQuantity( '{{this._id}}','{{this.product._id}}','{{../user._id}}', -1 )">-</button> 
+                            <span id="{{this.product._id}}" > {{this.quantity}} </span>
+                            <button class="cart-item-count ml-3" onclick="changeQuantity( '{{this._id}}','{{this.product._id}}','{{../user._id}}', 1 )">+</button>
+
+                        </td>
+                        <td>
+                            <a href="" class=" btn btn-outline-danger m-1"
+                                onclick="deleteCartItem('{{this._id}}','{{this.product._id}}')"> <span
+                                    id="{{this.product._id}}"><i class="fas fa-trash"></i></span> </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+        <div class="float-right ">
+            <h4 class="float-left " style="font-family: 'Times New Roman', Times, serif;">TOTAL:Rs.<span
+                    id="total">{{totalValue}} </span> </h4>
+            <a href="/place-order" class="btn btn-success mt-3"
+                style="width: 80%; font-family: 'Times New Roman', Times, serif;"><b>Place Order</b> </a>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+
+    
+
+
+</script>

@@ -1,0 +1,30 @@
+<section>
+    <div class="row m-5">
+        <div class="col-md-6 m-auto p-5">
+            <div class="text-center">
+                <h2>LOGIN</h2>
+            </div>
+            <form action="/login" method="post">
+
+                <div class="form-group">
+                    <label >Email address</label>
+                    <input type="email" class="form-control"  name="Email" placeholder="Enter email">
+                    <small class="form-text text-muted">We'll never share your email with anyone
+                        else.</small>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control"  name="Password" placeholder="Password">
+                </div>
+               
+                {{#if loginErr}}
+                    <p class="error" style="color: red;">Invalid username or password </p>
+                {{/if}}
+
+                <a href="/signup">Create new account ?</a>
+                <button type="submit" class="btn btn-primary float-right">Login</button>
+            </form>
+
+        </div>
+    </div>
+</section>

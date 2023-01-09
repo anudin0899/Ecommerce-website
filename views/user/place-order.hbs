@@ -1,0 +1,150 @@
+<section>
+    <div class="container">
+        <div class="mt-5">
+            <h2> Delivery Details</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <form class="row g-3" action="" id="checkout-form">
+                    <div class="col-md-6 mt-2">
+                        <label for="" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="Name" name="Name">
+
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <label for="" class="form-label">City</label>
+                        <input type="text" class="form-control" id="City" name="City">
+                    </div>
+
+                    <div class="col-md-12 mt-2">
+                        <label for="" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="Address" name="Address">
+                    </div>
+
+                    <div class="col-md-6 mt-2">
+                        <label for="" class="form-label">Phone No</label>
+                        <input type="text" class="form-control" id="Mobile" name="Mobile">
+                        <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+                    </div>
+                    <div class="col-md-4 mt-2">
+                        <label for="" class="form-label">State</label>
+                        <select id="State" class="form-control" name="State">
+                            <option selected>Choose...</option>
+                            <option>Kerala</option>
+                            <option>Tamilnadu</option>
+                            <option>Karnataka</option>
+                            <option>Delhi</option>
+                            <option>Gujarat</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mt-2">
+                        <label for="" class="form-label">Pincode</label>
+                        <input type="text" class="form-control" name="Pin" id="Pin">
+                    </div>
+
+                    <div class=" mt-2 ">
+                        <div class="container checkout ">
+
+                            <h5 class="float-left pt-3 " style="font-family: 'Times New Roman', Times, serif;">TOTAL
+                                AMOUNT: Rs.{{total}} </h5>
+                            <hr><br>
+
+                            <div class="payment mt-4">
+                                <h5>Payment Method</h5>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="radio" name="payment-method" id="cod"
+                                        value="cod" checked>
+                                    <label class="form-check-label" for="">
+                                        Cash on Delivery(COD)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment-method"
+                                        id="onlinePayment" value="online payment">
+                                    <label class="form-check-label" for="">
+                                        Online Payment
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-warning mt-4">Place Order</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    $("#checkout-form").submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+
+                if (response.codSuccess) {
+                    alert('Order Placed')
+                    location.href = '/order-success'
+                } else {
+                    razorpayPayment(response)
+                }
+            }
+        })
+    })
+
+    function razorpayPayment(order){
+        var options = {
+            "key": "rzp_test_M16JkcjHOi2Rtt", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Shopping-Cart",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                
+
+                verifyPayment(response,order)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+
+    function verifyPayment(payment,order){
+        $.ajax({
+            url:'/verify-payment',
+            data:{
+                payment, 
+                order
+            },
+            method:'post',
+            success:(response)=>{
+                if(response.status){
+                    alert('Order Placed')
+                    location.href = '/order-success'
+                }else{
+                    alert('payment Failed')
+                }
+            }
+        })
+    }
+
+</script>
