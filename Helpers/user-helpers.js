@@ -8,8 +8,8 @@ const Razorpay = require('razorpay');
 const { resolve } = require('path');
 
 var instance = new Razorpay({
-    key_id: 'rzp_test_M16JkcjHOi2Rtt',
-    key_secret: 'NicYoty2sFanCFHttcAXwaWs',
+    key_id: '',
+    key_secret: '',
 });
 
 
@@ -333,7 +333,7 @@ module.exports = {
     verifyPayment: (details) => {
         return new Promise((resolve, reject) => {
             const crypto = require('crypto');
-            var hmac = crypto.createHmac('sha256', 'NicYoty2sFanCFHttcAXwaWs');
+            var hmac = crypto.createHmac('sha256', '');
 
             hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
             hmac = hmac.digest('hex')
